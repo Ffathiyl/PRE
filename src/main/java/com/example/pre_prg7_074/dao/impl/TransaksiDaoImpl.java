@@ -37,4 +37,19 @@ public class TransaksiDaoImpl implements TransaksiDao {
         return transaksiVos;
     }
 
+    @Override
+    public List<TransaksiVo> getTransaksiByNama(String nama) {
+        Iterable<Transaksi> transaksis = transaksiRepository.findAll();
+        List<TransaksiVo> transaksiVos = new ArrayList<>();
+
+        for (Transaksi transaksi : transaksis) {
+            Layanan layanan = layananRepository.findById(transaksi.getIdLayanan()).orElse(null);
+            if (layanan != null) {
+                TransaksiVo transaksiVo = new TransaksiVo(transaksi, layanan);
+                transaksiVos.add(transaksiVo);
+            }
+        }
+
+        return transaksiVos;
+    }
 }
